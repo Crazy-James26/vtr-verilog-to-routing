@@ -1,0 +1,9 @@
+read projects/conv_kernel/output/conv_kernel_yosys_rewrite.blif
+write_blif  projects/conv_kernel/output/conv_kernel_abc.blif
+exit
+help
+abc 03> 
+source -s abc.rc
+read projects/conv_kernel/output/conv_kernel_yosys_re.blif
+if -K 6
+write_blif projects/conv_kernel/output/conv_kernel_abc.blif

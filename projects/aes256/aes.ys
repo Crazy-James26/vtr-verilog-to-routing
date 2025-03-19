@@ -1,0 +1,11 @@
+read_verilog -sv /mnt/c/Users/new/Desktop/vtr-verilog-to-routing/projects/aes/verilog/*.v
+hierarchy -check -top aes
+proc
+opt -nodffe -nosdff
+memory
+techmap
+flatten -wb
+dfflibmap -liberty /mnt/c/Users/new/Desktop/vtr-verilog-to-routing/yosys/examples/cmos/cmos_cells.lib
+clean
+stat
+write_blif /mnt/c/Users/new/Desktop/vtr-verilog-to-routing/projects/aes/output/aes_yosys.blif

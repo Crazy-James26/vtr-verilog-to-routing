@@ -1,0 +1,11 @@
+read_verilog -sv /mnt/c/Users/new/Desktop/vtr-verilog-to-routing/projects/huffman_enc/verilog/*.v
+hierarchy -check -top huffman_enc
+proc
+opt -nodffe -nosdff
+memory
+techmap
+flatten -wb
+dfflibmap -liberty /mnt/c/Users/new/Desktop/vtr-verilog-to-routing/yosys/examples/cmos/cmos_cells.lib
+clean
+stat
+write_blif /mnt/c/Users/new/Desktop/vtr-verilog-to-routing/projects/huffman_enc/output/huffman_enc_yosys.blif

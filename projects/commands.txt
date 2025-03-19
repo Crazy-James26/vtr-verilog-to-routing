@@ -1,0 +1,17 @@
+source .venv/bin/activate
+export PATH=$PATH:/mnt/c/Users/new/Desktop/vtr-verilog-to-routing/yosys
+export PATH=$PATH:/mnt/c/Users/new/Desktop/vtr-verilog-to-routing/vpr
+
+python vtr_flow_opt/yosys_opt.py --v projects/conv_kernel/verilog/conv_kernel.v --os projects/conv_kernel/conv_kernel.ys --ob projects/conv_kernel/output/conv_kernel_yosys.blif --opt true --top conv_kernel
+
+yosys projects/conv_kernel/conv_kernel.ys
+
+python vtr_flow_opt/rewriteBLIF.py --ib projects/conv_kernel/output/conv_kernel_yosys.blif --ob projects/conv_kernel/output/conv_kernel_yosys_re.blif --stage yosys
+
+abc/abc -c 'read projects/conv_kernel/output/conv_kernel_yosys_re.blif; if -K 6; write_blif projects/conv_kernel/output/conv_kernel_abc.blif'
+
+python vtr_flow_opt/rewriteBLIF.py --ib projects/conv_kernel/output/conv_kernel_abc.blif --ob projects/conv_kernel/output/conv_kernel_abc_re.blif --stage abc
+
+cd projects/conv_kernel/output
+
+vpr /mnt/c/Users/new/Desktop/vtr-verilog-to-routing/vtr_flow/arch/timing/k6_frac_N10_frac_chain_mem32K_40nm.xml conv_kernel_abc_re.blif
